@@ -27,3 +27,13 @@ INNER JOIN Rating R1 USING(mID)
 INNER JOIN Rating R2 USING(rID)
 INNER JOIN Reviewer USING (rID)
 WHERE R1.mID=R2.mID AND R1.ratingDate < R2.ratingDate AND R1.stars < R2.stars
+
+#If two students A and B are friends, and A likes B but not vice-versa, remove the Likes tuple. 
+
+DELETE FROM LIKES
+WHERE ID2 IN 
+(SELECT ID2 FROM Friend
+WHERE Likes.ID1=ID1)
+AND ID2 NOT IN
+(SELECT L.ID1 FROM Likes L
+WHERE Likes.ID1=L.ID2)
